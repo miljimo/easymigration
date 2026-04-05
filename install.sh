@@ -34,6 +34,7 @@ function clone_repository(){
        
        # check if go is installed and if its installed it should run it.
        if [ $HAS_GO == 'true' ]; then
+          ls -a .
           go mod tidy
           go build -o "$BINARY_FILE_DIR/obz"
        fi
