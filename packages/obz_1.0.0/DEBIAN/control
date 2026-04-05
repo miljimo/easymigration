@@ -1,7 +1,0 @@
-Package: obz
-Version: 1.0.0
-Section: utils
-Priority: optional
-Architecture: amd64
-Maintainer: Obaro I Johnson <johnson.obaro@hotmail.com>
-Description: Simple light tool for database migration
