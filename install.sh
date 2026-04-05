@@ -77,7 +77,7 @@ function install_deb_package(){
 
        # now we have build the application we need to build the package
        local packageFile="./${DIST_DIR}/${PACKAGE_NAME}_${PACKAGE_VERSION}.deb"
-       sudo dpkg-deb --build $parentDir  "$packageFile"
+       dpkg-deb --build $parentDir  "$packageFile"
        #rm  -rf "$parentDir"
 
 
