@@ -60,6 +60,8 @@ function install_deb_package(){
 
        # Create the control files and pupolate it with the information needed
        sudo touch  "$parentDir/DEBIAN/control"
+
+       sudo chown -R $(whoami):$(whoami) dist
        echo "Package: ${PACKAGE_NAME}" >  "$parentDir/DEBIAN/control"
        echo "Version: ${PACKAGE_VERSION}" >>  "$parentDir/DEBIAN/control"
        echo "Section: utils" >>  "$parentDir/DEBIAN/control"
