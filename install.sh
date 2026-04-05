@@ -25,6 +25,10 @@ clone_repository(){
    fi
    git clone  "$REPO_URI"  "obz_code"
 
+
+   rm -rf "obz_code"
+   echo "installed and cleaned"
+
 }
 
 install_deb_package(){
