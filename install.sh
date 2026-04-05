@@ -20,7 +20,7 @@ export REPO_NAME="obz_code"
 
 
 
-function clone_repository(){
+function  install(){
 
 
    rm -rf "$REPO_NAME"
@@ -40,12 +40,11 @@ function clone_repository(){
           go build -o "$BINARY_FILE_DIR/obz"
        fi
 
-       
+       install_deb_package
    popd
 
    rm -rf "$REPO_NAME"
-   echo "installed and cleaned"
-
+   echo "installation completed"
 }
 
 function install_deb_package(){
@@ -90,5 +89,5 @@ function install_deb_package(){
     return 0
 }
 
-clone_repository
-install_deb_package
+install
+
