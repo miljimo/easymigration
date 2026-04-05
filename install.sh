@@ -8,30 +8,47 @@
 #Maintainer: Obaro I Johnson <johnson.obaro@hotmail.com>
 #Description: Simple light tool for database migration
 
+export PATH="$PATH:/usr/local/go/bin"
 export PACKAGE_NAME=obz
 export PACKAGE_VERSION="1.0.0"
 export DIST_DIR="dist"
 export BINARY_FILE_DIR="./bin"
 export REPO_URI="https://github.com/miljimo/easymigration.git"
 export HAS_GIT="$(type "git" &> /dev/null && echo true || echo false)"
+export HAS_GO="$(type "go" &> /dev/null && echo true || echo false)"
+export REPO_NAME="obz_code"
 
 
-clone_repository(){
 
 
-   if [ [  "$HAS_GIT" -ne 'true' ] ] ; then
+function clone_repository(){
+
+
+   rm -rf "$REPO_NAME"
+   if [  "$HAS_GIT" != 'true'  ] ; then
      echo "required git to install this tools"
      return ;
    fi
-   git clone  "$REPO_URI"  "obz_code"
+   git clone  "$REPO_URI"  "$REPO_NAME"
 
+   pushd "$REPO"
+       
+       # check if go is installed and if its installed it should run it.
+       if [ $HAS_GO == 'true' ]; then
+          
+          go build -o "$BINARY_FILE_DIR/obz"
+          
+       fi
 
-   rm -rf "obz_code"
+       
+   popd
+
+   rm -rf "$REPO_NAME"
    echo "installed and cleaned"
 
 }
 
-install_deb_package(){
+function install_deb_package(){
     local curr="${OSTYPE}"
     if [[ $curr == "linux-gnu"* ]]; then
       echo "supported"
