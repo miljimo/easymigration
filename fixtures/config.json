@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "envFile":".env.development", 
+  "credentials": {
+    "username": "${DB_ROOT_USER}",
+    "password": "${DB_PASSWORD}",
+    "host": "${DB_HOST}",
+    "port": "${DB_PORT}"
+  },
+  "databases": [
+    {
+      "name":"users_db",
+      "scripts": [
+        {
+          "order": 1,
+          "path": "../../services/users_api/sql/__init.sql"
+        },
+        {
+          "order": 2,
+          "path": "../../services/users_api/sql/tables/*.sql"
+        },
+        {
+          "order": 3,
+          "path": "../../services/users_api/sql/procedures/*.sql"
+        }
+      ]
+    }
+  ]
+}
