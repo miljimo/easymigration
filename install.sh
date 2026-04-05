@@ -13,12 +13,21 @@ export PACKAGE_VERSION="1.0.0"
 export DIST_DIR="dist"
 export BINARY_FILE_DIR="./bin"
 export REPO_URI="https://github.com/miljimo/easymigration.git"
+export HAS_GIT="$(type "git" &> /dev/null && echo true || echo false)"
 
-function clone_repository(){
+
+clone_repository(){
+
+
+   if [ [  "$HAS_GIT" -ne 'true' ] ] ; then
+     echo "required git to install this tools"
+     return ;
+   fi
    git clone  "$REPO_URI"  "obz_code"
+
 }
 
-function install_deb_package(){
+install_deb_package(){
     local curr="${OSTYPE}"
     if [[ $curr == "linux-gnu"* ]]; then
       echo "supported"
