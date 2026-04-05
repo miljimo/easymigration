@@ -1,10 +1,10 @@
-module example.com/datamigration
+module github.com/miljimo/easymigration
 
 go 1.25.5
 
-replace example.com/datamigration/internal/sql/data => ../internal/sql/data
+replace github.com/miljimo/easymigration/internal/sql/data => ../internal/sql/data
 
-replace example.com/datamigration/internal/sql/migration => ../internal/sql/migration
+replace github.com/miljimo/easymigration/internal/sql/migration => ../internal/sql/migration
 
 require github.com/go-sql-driver/mysql v1.9.3
 

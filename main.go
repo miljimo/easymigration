@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"syscall"
 
-	"example.com/datamigration/internal/sql/migrations"
+	"github.com/miljimo/easymigration/internal/sql/migrations"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +28,7 @@ var rootCmd = &cobra.Command{
 	Long: "migration tools for databases ",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Println("Root command executed")
+		cmd.Help()
 	},
 }
 

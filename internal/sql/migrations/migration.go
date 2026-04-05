@@ -11,7 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"example.com/datamigration/internal/sql/data"
+	"github.com/miljimo/easymigration/internal/sql/data"
 )
 
 /*
