@@ -12,7 +12,11 @@ export PACKAGE_NAME=obz
 export PACKAGE_VERSION="1.0.0"
 export DIST_DIR="dist"
 export BINARY_FILE_DIR="./bin"
+export REPO_URI="https://github.com/miljimo/easymigration.git"
 
+function clone_repository(){
+   git clone  "$REPO_URI"  "obz_code"
+}
 
 function install_deb_package(){
     local curr="${OSTYPE}"
@@ -56,5 +60,5 @@ function install_deb_package(){
     return 0
 }
 
-
+clone_repository
 install_deb_package
