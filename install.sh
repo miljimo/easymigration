@@ -30,8 +30,9 @@ function clone_repository(){
    fi
    git clone  "$REPO_URI"  "$REPO_NAME"
 
-   pushd "$REPO"
-       
+   pushd "$REPO_NAME"
+       echo "Repository = $REPO_NAME"
+       echo "Current directory  = $(pwd)"
        # check if go is installed and if its installed it should run it.
        if [ $HAS_GO == 'true' ]; then
           ls -a .
