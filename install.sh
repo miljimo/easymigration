@@ -47,49 +47,44 @@ function  install(){
    echo "installation completed"
 }
 
+function initDirs(){
+   local parentDir="./$DIST_DIR/${PACKAGE_NAME}_${PACKAGE_VERSION}"
+   mkdir -p $parentDir
+   mkdir -p "$parentDir/usr/local/bin"
+   mkdir -p "$parentDir/DEBIAN"
+   mkdir -p "$DIST_DIR"
+   sudo touch  "$parentDir/DEBIAN/control"
+   echo "$parentDir"
+}
+
+function createPackageControlFile(){
+   local parentDir="$1"
+   echo "Package: ${PACKAGE_NAME}" >  "$parentDir/DEBIAN/control"
+   echo "Version: ${PACKAGE_VERSION}" >>  "$parentDir/DEBIAN/control"
+   echo "Section: utils" >>  "$parentDir/DEBIAN/control"
+   echo "Architecture: amd64" >>  "$parentDir/DEBIAN/control"       
+   echo "Priority: optional" >>  "$parentDir/DEBIAN/control"
+   echo "Maintainer: Obaro I Johnson <johnson.obaro@hotmail.com>" >>  "$parentDir/DEBIAN/control"
+   echo "Description: Simple light tool for database migration" >> "$parentDir/DEBIAN/control"  
+}
+
 function install_deb_package(){
-    local curr="${OSTYPE}"
-    if [[ $curr == "linux-gnu"* ]]; then
-      echo "supported"
-      
-       local parentDir="./$DIST_DIR/${PACKAGE_NAME}_${PACKAGE_VERSION}"
-       mkdir -p $parentDir
-       mkdir -p "$parentDir/usr/local/bin"
-       mkdir -p "$parentDir/DEBIAN"
-       mkdir -p "$DIST_DIR"
+      local curr="${OSTYPE}"
 
-       # Create the control files and pupolate it with the information needed
-       sudo touch  "$parentDir/DEBIAN/control"
-
-       sudo chown -R $(whoami):$(whoami) "./$DIST_DIR"
-
-       echo "Package: ${PACKAGE_NAME}" >  "$parentDir/DEBIAN/control"
-       echo "Version: ${PACKAGE_VERSION}" >>  "$parentDir/DEBIAN/control"
-       echo "Section: utils" >>  "$parentDir/DEBIAN/control"
-       echo "Architecture: amd64" >>  "$parentDir/DEBIAN/control"       
-       echo "Priority: optional" >>  "$parentDir/DEBIAN/control"
-       echo "Maintainer: Obaro I Johnson <johnson.obaro@hotmail.com>" >>  "$parentDir/DEBIAN/control"
-       echo "Description: Simple light tool for database migration" >> "$parentDir/DEBIAN/control"  
-
-       # At this point the application is already build and we just want to copy all the
-       # binaries to the  usr/local/bin directories
-
-       sudo cp -r ${BINARY_FILE_DIR}/* "$parentDir/usr/local/bin/"
-
-       # now we have build the application we need to build the package
-       local packageFile="./${DIST_DIR}/${PACKAGE_NAME}_${PACKAGE_VERSION}.deb"
-       dpkg-deb --build $parentDir  "$packageFile"
-       #rm  -rf "$parentDir"
-
-
-       #install the application into the linux environment 
-       sudo chown -R $(whoami):$(whoami) dist
-       sudo dpkg --install  $packageFile;
-       echo "installation completed"
-       return "$?";
-    fi
-
-    return 0
+      if [[ $curr == "linux-gnu"* ]]; then
+         local parentDir=$(initDirs)
+         sudo chown -R $(whoami):$(whoami) "./$DIST_DIR"
+         createPackageControlFile "$parentDir"
+         sudo cp -r ${BINARY_FILE_DIR}/* "$parentDir/usr/local/bin/"
+         local packageFile="./${DIST_DIR}/${PACKAGE_NAME}_${PACKAGE_VERSION}.deb"
+         dpkg-deb --build $parentDir  "$packageFile"
+         #install the application into the linux environment 
+         sudo chown -R $(whoami):$(whoami) dist
+         sudo dpkg --install  $packageFile;
+         echo "installation completed"
+         return "$?";
+      fi
+      return 0
 }
 
 install
