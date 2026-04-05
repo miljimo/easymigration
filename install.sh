@@ -53,15 +53,16 @@ function install_deb_package(){
       echo "supported"
       
        local parentDir="./$DIST_DIR/${PACKAGE_NAME}_${PACKAGE_VERSION}"
-       sudo mkdir -p $parentDir
-       sudo mkdir -p "$parentDir/usr/local/bin"
-       sudo mkdir -p "$parentDir/DEBIAN"
-       sudo mkdir -p "$DIST_DIR"
+       mkdir -p $parentDir
+       mkdir -p "$parentDir/usr/local/bin"
+       mkdir -p "$parentDir/DEBIAN"
+       mkdir -p "$DIST_DIR"
 
        # Create the control files and pupolate it with the information needed
        sudo touch  "$parentDir/DEBIAN/control"
 
-       sudo chown -R $(whoami):$(whoami) dist
+       sudo chown -R $(whoami):$(whoami) "./$DIST_DIR"
+
        echo "Package: ${PACKAGE_NAME}" >  "$parentDir/DEBIAN/control"
        echo "Version: ${PACKAGE_VERSION}" >>  "$parentDir/DEBIAN/control"
        echo "Section: utils" >>  "$parentDir/DEBIAN/control"
@@ -82,7 +83,7 @@ function install_deb_package(){
 
 
        #install the application into the linux environment 
-
+       sudo chown -R $(whoami):$(whoami) dist
        sudo dpkg --install  $packageFile;
        echo "installation completed"
        return "$?";
