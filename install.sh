@@ -83,7 +83,7 @@ function install_deb_package(){
 
        #install the application into the linux environment 
 
-       dpkg --install  $packageFile;
+       sudo dpkg --install  $packageFile;
        echo "installation completed"
        return "$?";
     fi
