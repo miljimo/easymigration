@@ -20,7 +20,6 @@ export REPO_NAME="obz_code"
 
 
 
-
 function clone_repository(){
 
 
@@ -53,13 +52,13 @@ function install_deb_package(){
       echo "supported"
       
        local parentDir="./$DIST_DIR/${PACKAGE_NAME}_${PACKAGE_VERSION}"
-       mkdir -p $parentDir
-       mkdir -p "$parentDir/usr/local/bin"
-       mkdir -p "$parentDir/DEBIAN"
-       mkdir -p "$DIST_DIR"
+       sudo mkdir -p $parentDir
+       sudo mkdir -p "$parentDir/usr/local/bin"
+       sudo mkdir -p "$parentDir/DEBIAN"
+       sudo mkdir -p "$DIST_DIR"
 
        # Create the control files and pupolate it with the information needed
-       touch  "$parentDir/DEBIAN/control"
+       sudo touch  "$parentDir/DEBIAN/control"
        echo "Package: ${PACKAGE_NAME}" >  "$parentDir/DEBIAN/control"
        echo "Version: ${PACKAGE_VERSION}" >>  "$parentDir/DEBIAN/control"
        echo "Section: utils" >>  "$parentDir/DEBIAN/control"
@@ -71,11 +70,11 @@ function install_deb_package(){
        # At this point the application is already build and we just want to copy all the
        # binaries to the  usr/local/bin directories
 
-       cp -r ${BINARY_FILE_DIR}/* "$parentDir/usr/local/bin/"
+       sudo cp -r ${BINARY_FILE_DIR}/* "$parentDir/usr/local/bin/"
 
        # now we have build the application we need to build the package
        local packageFile="./${DIST_DIR}/${PACKAGE_NAME}_${PACKAGE_VERSION}.deb"
-       dpkg-deb --build $parentDir  "$packageFile"
+       sudo dpkg-deb --build $parentDir  "$packageFile"
        #rm  -rf "$parentDir"
 
 
