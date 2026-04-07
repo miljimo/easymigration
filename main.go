@@ -5,18 +5,14 @@ import (
 	"fmt"
 	"syscall"
 
-	"github.com/miljimo/easymigration/internal/sql/migrations"
+	"github.com/miljimo/easymigration/internal/config"
+	"github.com/miljimo/easymigration/internal/reader"
 	"github.com/spf13/cobra"
 )
 
 func runMigration(filename string) error {
 
-	config, err := migrations.Decode(filename)
-	if err != nil {
-		return err
-	}
-
-	err = migrations.Migrate(context.Background(), *config)
+	err := config.Migrate(context.Background(), filename)
 	if err != nil {
 		return err
 	}
@@ -44,7 +40,7 @@ var migrationStart = &cobra.Command{
 			cmd.Help()
 			return err
 		}
-		if migrations.Exist(filename) != true {
+		if reader.Exist(filename) != true {
 			return fmt.Errorf("migration configuration doesn't exists ,  filename = %s", filename)
 		}
 		return runMigration(filename)

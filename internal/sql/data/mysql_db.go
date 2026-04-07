@@ -159,14 +159,9 @@ func (connector *dataConnectionImpl) initial(cxt context.Context, db *sql.DB) er
 
 // The function open a connection to the database and return a DataContext that can be use to run
 // SQL queries
-func (connector *dataConnectionImpl) createDataContext(cxt context.Context, credential DataCredential, createFunc func(cxt context.Context, db *sql.DB) (DataContext, error)) (DataContext, error) {
+func (connector *dataConnectionImpl) createDataContext(cxt context.Context, connString string, createFunc func(cxt context.Context, db *sql.DB) (DataContext, error)) (DataContext, error) {
 
-	dsn, err := credential.GetConnectionString()
-	if err != nil {
-		return nil, err
-	}
-
-	sqlDB, err := sql.Open(MYSQL_DRIVER, dsn)
+	sqlDB, err := sql.Open(MYSQL_DRIVER, connString)
 	if err != nil {
 		return nil, fmt.Errorf("unable to open connection: %w", err)
 	}
@@ -189,7 +184,7 @@ func (connector *dataConnectionImpl) createDataContext(cxt context.Context, cred
 	return &dataContextImpl{db: sqlDB}, nil
 }
 
-func WithCredential(cxt context.Context, credential DataCredential) (DataContext, error) {
+func WithCredential(cxt context.Context, connString string) (DataContext, error) {
 	conn := dataConnectionImpl{}
-	return conn.createDataContext(cxt, credential, nil)
+	return conn.createDataContext(cxt, connString, nil)
 }
