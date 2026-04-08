@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "envFile":".env.development", 
+  "envFile":".env.development",
   "credentials": {
     "username": "${DB_ROOT_USER}",
     "password": "${DB_PASSWORD}",
@@ -9,21 +9,84 @@
   },
   "databases": [
     {
+      "name": "courses_db",
+      "scripts": [
+        {
+          "order": 1,
+          "path": "services/courses/sql/__init.sql",
+          "isDirectory": false
+        },
+        {
+          "order": 2,
+          "path": "services/courses/sql/schema.sql",
+          "isDirectory": false
+        },
+        {
+          "order": 3,
+          "path": "services/courses/sql/procedures/*.sql",
+          "isDirectory": true
+        },
+        {
+          "order": 4,
+          "path": "services/courses/sql/functions/*.sql",
+          "isDirectory": true
+        }
+      ],
+
+      "data":[
+           {
+            "name":"courses_db",
+            "type":"csv",
+            "filePath":""
+           }
+          
+      ]
+    },
+    {
+      "name": "email_db",
+      "scripts": [
+        {
+          "order": 1,
+          "path": "services/email/sql/__init.sql",
+          "isDirectory": false
+        },
+        {
+          "order": 2,
+          "path": "services/email/sql/schema/*.sql",
+          "isDirectory": true
+        },
+        {
+          "order": 3,
+          "path": "services/email/sql/procedures/*.sql",
+          "isDirectory": true
+        },
+        {
+          "order": 4,
+          "path": "services/email/sql/functions/*.sql",
+          "isDirectory": true
+        }
+      ]
+    },
+    {
       "name":"users_db",
       "scripts": [
         {
           "order": 1,
-          "path": "../../services/users_api/sql/__init.sql"
+          "path": "services/users_api/sql/__init.sql",
+          "isDirectory": false
         },
         {
           "order": 2,
-          "path": "../../services/users_api/sql/tables/*.sql"
+          "path": "services/users_api/sql/tables/*.sql",
+          "isDirectory": true
         },
         {
           "order": 3,
-          "path": "../../services/users_api/sql/procedures/*.sql"
+          "path": "services/users_api/sql/procedures/*.sql",
+          "isDirectory": true
         }
       ]
     }
   ]
+
 }
