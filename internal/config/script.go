@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/miljimo/easymigration/internal/data"
 	"github.com/miljimo/easymigration/internal/reader"
-	"github.com/miljimo/easymigration/internal/sql/data"
 )
 
 type Script interface {

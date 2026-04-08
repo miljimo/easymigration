@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"sort"
 
+	"github.com/miljimo/easymigration/internal/data"
 	"github.com/miljimo/easymigration/internal/environment"
-	"github.com/miljimo/easymigration/internal/sql/data"
 )
 
 type Database interface {

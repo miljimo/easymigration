@@ -180,7 +180,6 @@ func (connector *dataConnectionImpl) createDataContext(cxt context.Context, conn
 
 		return dataCxt, nil
 	}
-	// otherwise use the default mysql context
 	return &dataContextImpl{db: sqlDB}, nil
 }
 
