@@ -5,10 +5,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:  "obz [command] [options]",
+	Use:  "obz",
 	Long: "A simple migration tools",
 	Run: func(cmd *cobra.Command, args []string) {
-
 		cmd.Help()
 	},
 }
