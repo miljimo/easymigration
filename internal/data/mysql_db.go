@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-sql-driver/mysql"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -36,10 +37,12 @@ type DataContext interface {
 	Query(ctx context.Context, query string, params ...interface{}) (DBResults, error)
 	Execute(ctx context.Context, query string, params ...interface{}) (RowsAffected, error)
 	Close() error
+	Name() string
 }
 
 type dataContextImpl struct {
-	db *sql.DB
+	db   *sql.DB
+	name string
 }
 
 func (db *dataContextImpl) Close() error {
@@ -47,6 +50,10 @@ func (db *dataContextImpl) Close() error {
 		return db.db.Close()
 	}
 	return nil
+}
+
+func (db *dataContextImpl) Name() string {
+	return db.name
 }
 
 func (db *dataContextImpl) fetch(rows *sql.Rows) (DBResults, error) {
@@ -159,7 +166,7 @@ func (connector *dataConnectionImpl) initial(cxt context.Context, db *sql.DB) er
 
 // The function open a connection to the database and return a DataContext that can be use to run
 // SQL queries
-func (connector *dataConnectionImpl) createDataContext(cxt context.Context, connString string, createFunc func(cxt context.Context, db *sql.DB) (DataContext, error)) (DataContext, error) {
+func (connector *dataConnectionImpl) createDataContext(cxt context.Context, dbName string, connString string, createFunc func(cxt context.Context, db *sql.DB) (DataContext, error)) (DataContext, error) {
 
 	sqlDB, err := sql.Open(MYSQL_DRIVER, connString)
 	if err != nil {
@@ -180,10 +187,15 @@ func (connector *dataConnectionImpl) createDataContext(cxt context.Context, conn
 
 		return dataCxt, nil
 	}
-	return &dataContextImpl{db: sqlDB}, nil
+	return &dataContextImpl{db: sqlDB, name: dbName}, nil
 }
 
 func WithCredential(cxt context.Context, connString string) (DataContext, error) {
 	conn := dataConnectionImpl{}
-	return conn.createDataContext(cxt, connString, nil)
+
+	cfg, err := mysql.ParseDSN(connString)
+	if err != nil {
+		return nil, err
+	}
+	return conn.createDataContext(cxt, cfg.DBName, connString, nil)
 }
