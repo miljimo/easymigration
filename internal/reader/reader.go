@@ -1,8 +1,13 @@
 package reader
 
 import (
+	"encoding/csv"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
+
+	"github.com/miljimo/easymigration/internal/data"
 )
 
 /*
@@ -43,6 +48,37 @@ func Open(filename string) (FileReader, error) {
 		return nil, fmt.Errorf("%s doesnt not exist", filename)
 	}
 	return fs, nil
+}
+
+func ReadCSV(filename string) (data.Table, error) {
+	fs, err := openFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer fs.Close()
+	reader := csv.NewReader(fs)
+	record, err := reader.Read()
+	if err != nil {
+		return nil, err
+	}
+
+	baseName := filepath.Base(filename)
+	filenameWithExtension := strings.TrimSuffix(baseName, filepath.Ext(baseName))
+	frame, err := data.NewFrame(filenameWithExtension, data.NewRowHeader(record))
+	if err != nil {
+		return nil, err
+	}
+
+	//  Read all the records until there is no record to
+	// read from the reader.
+	for {
+		record, err = reader.Read()
+		if err != nil {
+			break
+		}
+		frame.AddRowItems(record)
+	}
+	return frame, nil
 }
 
 func Exist(filename string) bool {
