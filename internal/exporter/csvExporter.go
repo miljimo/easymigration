@@ -95,6 +95,9 @@ func (ex *imptCSVExporter) createRecords(tableName string, df data.Table) error 
 		strings.Join(headers, ", "),
 		strings.Join(valueStrings, ", "),
 	)
+	fmt.Println("SQL = ")
+	fmt.Println(query)
+	fmt.Println(" =")
 
 	_, err := ex.db.Execute(context.Background(), query, valueArgs...)
 	return err
@@ -102,9 +105,10 @@ func (ex *imptCSVExporter) createRecords(tableName string, df data.Table) error 
 
 // The function will export the table data into the database
 func Export(cxt context.Context, dataContext data.DataContext, df data.Table) error {
-	if df == nil {
+	if df == nil || df.RowCounts() == 0 {
 		return fmt.Errorf("no data to export")
 	}
+
 	exporter := &imptCSVExporter{db: dataContext}
 
 	if !exporter.tableExist(df.Name()) {

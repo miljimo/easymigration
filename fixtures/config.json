@@ -2,6 +2,7 @@
   "version": "1.0.0",
   "envFile":".env.development",
   "credentials": {
+    "Name":"${DB_NAME}",
     "username": "${DB_ROOT_USER}",
     "password": "${DB_PASSWORD}",
     "host": "${DB_HOST}",

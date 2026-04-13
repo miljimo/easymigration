@@ -4,7 +4,7 @@ import "testing"
 
 func Test_RenameDataFrameColumnName(t *testing.T) {
 	headers := NewRowHeader([]string{"Email", "Message", "Time", "Date"})
-	df, _ := NewFrame("test", headers)
+	df, _ := NewTable("test", headers)
 	df.Rename("Email", "email")
 
 	if df.Contains("Email") {

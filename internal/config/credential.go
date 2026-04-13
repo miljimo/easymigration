@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-type Credential interface {
+type Stringer interface {
 	String() (string, error)
 }
 

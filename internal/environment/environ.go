@@ -97,9 +97,16 @@ func (environ *impEnvironment) Extract(content string) {
 	}
 }
 
+/*************************************
+**************************************/
+var instance *impEnvironment = nil
+
 func New() Environment {
-	return &impEnvironment{
-		re:         regexp.MustCompile(`\$\{([^}]+)\}`),
-		values:     make(map[string]string, 0),
-		keyEntries: make([]string, 0)}
+	if instance == nil {
+		instance = &impEnvironment{
+			re:         regexp.MustCompile(`\$\{([^}]+)\}`),
+			values:     make(map[string]string, 0),
+			keyEntries: make([]string, 0)}
+	}
+	return instance
 }

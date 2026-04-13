@@ -39,7 +39,7 @@ func (df *tableImpl) Filters(filters []string) (Table, error) {
 	if err != nil {
 		return nil, err
 	}
-	frame, err := NewFrame(df.name, headers)
+	frame, err := NewTable(df.name, headers)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (df *tableImpl) Split(n int) ([]Table, error) {
 	return tables, nil
 }
 
-func NewFrame(title string, headers Row) (Table, error) {
+func NewTable(title string, headers Row) (Table, error) {
 	visited := NewRowHeader([]string{})
 	for _, column := range headers.Columns() {
 		if visited.Exists(column) {

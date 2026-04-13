@@ -20,7 +20,7 @@ type Configuration interface {
 	Validate() (bool, error)
 	Migrate(cxt context.Context, dataContext data.DataContext) error
 	Environ() environment.Environment
-	Credential() Credential
+	Credential() Stringer
 	SetEnvironment(environ environment.Environment)
 	Path() string
 }
@@ -71,7 +71,7 @@ func (config *ConfigurationData) Environ() environment.Environment {
 	return config.environ
 }
 
-func (config *ConfigurationData) Credential() Credential {
+func (config *ConfigurationData) Credential() Stringer {
 	return &config.Credentials
 }
 
@@ -86,7 +86,7 @@ func (config *ConfigurationData) Path() string {
 	return config.path
 }
 
-func openConfigFile(filename string) (Configuration, error) {
+func OpenConfigFile(filename string) (Configuration, error) {
 	filename, err := filepath.Abs(filename)
 	if err != nil {
 		return nil, err
@@ -117,7 +117,7 @@ func openConfigFile(filename string) (Configuration, error) {
 }
 
 func Migrate(cxt context.Context, filename string) error {
-	config, err := openConfigFile(filename)
+	config, err := OpenConfigFile(filename)
 	if err != nil {
 		return err
 	}

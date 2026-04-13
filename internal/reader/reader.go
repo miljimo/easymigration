@@ -64,7 +64,7 @@ func ReadCSV(filename string) (data.Table, error) {
 
 	baseName := filepath.Base(filename)
 	filenameWithExtension := strings.TrimSuffix(baseName, filepath.Ext(baseName))
-	frame, err := data.NewFrame(filenameWithExtension, data.NewRowHeader(record))
+	frame, err := data.NewTable(filenameWithExtension, data.NewRowHeader(record))
 	if err != nil {
 		return nil, err
 	}
