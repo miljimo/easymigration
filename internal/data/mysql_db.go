@@ -108,6 +108,7 @@ func (db *dataContextImpl) CallProc(ctx context.Context, procName string, params
 	}
 	placeholders := db.createParameterPlaceholder(params...)
 	query := fmt.Sprintf("CALL %s%s", procName, placeholders)
+	fmt.Printf("Query : %s\n", query)
 	return db.Query(ctx, query, params...)
 }
 
@@ -120,7 +121,7 @@ func (db *dataContextImpl) Query(ctx context.Context, query string, params ...in
 
 	rows, err := db.db.QueryContext(ctx, query, params...)
 	if err != nil {
-		return nil, fmt.Errorf("DB: error =%w", err)
+		return nil, err
 	}
 	defer rows.Close()
 	return db.fetch(rows)

@@ -21,14 +21,16 @@ type Configuration interface {
 	Migrate(cxt context.Context, dataContext data.DataContext) error
 	Environ() environment.Environment
 	Credential() Stringer
+	Data() []MigrationData
 	SetEnvironment(environ environment.Environment)
 	Path() string
 }
 
 type ConfigurationData struct {
-	Version     string         `json:"version"`
-	Credentials CredentialData `json:"credentials"`
-	Databases   []DatabaseData `json:"databases"`
+	Version     string          `json:"version"`
+	Credentials CredentialData  `json:"credentials"`
+	Databases   []DatabaseData  `json:"databases"`
+	Migrations  []MigrationData `json:"migrations"`
 
 	// private variables
 	environ environment.Environment
@@ -84,6 +86,10 @@ func (config *ConfigurationData) SetEnvironment(environ environment.Environment)
 
 func (config *ConfigurationData) Path() string {
 	return config.path
+}
+
+func (config *ConfigurationData) Data() []MigrationData {
+	return config.Migrations
 }
 
 func OpenConfigFile(filename string) (Configuration, error) {

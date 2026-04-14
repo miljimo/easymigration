@@ -88,6 +88,21 @@
         }
       ]
     }
+  ],
+
+  "migrations":[
+     {
+      "name":"users_db",
+      "reset": true,
+      "ingestions":[
+        {
+          "name":"users_db.CreateNewUser",
+          "parameters":["email","name", "surname", "phonenumber", "ipaddress", "agent"],
+          "path":"../../fixtures/csv/*.csv",
+          "isProcedure": true
+        }
+      ]
+     }
   ]
 
 }

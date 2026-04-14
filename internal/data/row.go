@@ -1,12 +1,16 @@
 package data
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Row interface {
 	Columns() []Column
 	Add(column string, value string)
 	Remove(columnName string)
 	AddColumn(column Column)
+	GetColumn(name string) Column
 	Exists(column Column) bool
 	Size() int
 	Filters(filters []string) (Row, error)
@@ -74,6 +78,14 @@ func (s *rowImpl) Remove(columnName string) {
 		}
 	}
 }
+func (s *rowImpl) GetColumn(name string) Column {
+	for _, col := range s.columns {
+		if strings.ToLower(col.Name()) == strings.ToLower(name) {
+			return col
+		}
+	}
+	return nil
+}
 
 func (s *rowImpl) Exists(c Column) bool {
 	for _, col := range s.columns {
@@ -100,10 +112,12 @@ func (s *rowImpl) AddColumn(c Column) {
 
 func (s *rowImpl) Filters(filters []string) (Row, error) {
 	newS := NewRowHeader([]string{})
-	for _, col := range s.columns {
-		if s.contains(col.Name(), filters) {
-			newS.AddColumn(col)
+	for _, filter := range filters {
+		column := s.GetColumn(filter)
+		if column == nil {
+			continue
 		}
+		newS.AddColumn(column)
 	}
 	return newS, nil
 }

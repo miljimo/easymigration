@@ -4,6 +4,7 @@ import "fmt"
 
 type Table interface {
 	Name() string
+	SetName(name string)
 	Rename(columnName string, to string) error
 	Headers() Row
 	Rows() []Row
@@ -95,6 +96,10 @@ func (df *tableImpl) Rows() []Row {
 
 func (df *tableImpl) Name() string {
 	return df.name
+}
+
+func (df *tableImpl) SetName(name string) {
+	df.name = name
 }
 
 func (df *tableImpl) rowRename(row Row, name string, to string) {

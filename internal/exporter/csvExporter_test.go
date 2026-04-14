@@ -49,3 +49,29 @@ func TestExportCSVFileIntoMYSQLDatabase(t *testing.T) {
 	}
 
 }
+
+func Test_ConvertFilesIntoTableObject_Success(t *testing.T) {
+
+	environ := environment.New()
+	environ.Set("DB_ROOT_USER", "root")
+	environ.Set("DB_PASSWORD", "password")
+	environ.Set("DB_HOST", "localhost")
+	environ.Set("DB_USER", "webmaster")
+	environ.Set("DB_PORT", "3306")
+	environ.Set("DB_NAME", "users_db")
+
+	conf, err := config.OpenConfigFile("../../fixtures/config.json")
+	if err != nil {
+		t.Errorf("Error %s", err)
+		return
+	}
+
+	ctx := context.Background()
+
+	err = ExportAll(ctx, conf)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+}
